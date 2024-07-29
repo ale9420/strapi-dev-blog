@@ -1,0 +1,19 @@
+{
+  "collectionName": "components_meta_metas",
+  "info": {
+    "displayName": "Meta",
+    "icon": "dashboard"
+  },
+  "options": {},
+  "attributes": {
+    "meta_title": {
+      "type": "string"
+    },
+    "meta_description": {
+      "type": "text"
+    },
+    "slug": {
+      "type": "string"
+    }
+  }
+}
