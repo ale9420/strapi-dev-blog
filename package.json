@@ -13,6 +13,7 @@
   "devDependencies": {},
   "dependencies": {
     "@ckeditor/strapi-plugin-ckeditor": "^0.0.13",
+    "@strapi-community/strapi-provider-upload-google-cloud-storage": "^4.10.5",
     "@strapi/plugin-cloud": "4.25.4",
     "@strapi/plugin-graphql": "^4.25.4",
     "@strapi/plugin-i18n": "4.25.4",
@@ -20,6 +21,7 @@
     "@strapi/plugin-users-permissions": "4.25.4",
     "@strapi/strapi": "4.25.4",
     "better-sqlite3": "8.6.0",
+    "pg": "^8.13.0",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "react-router-dom": "5.3.4",
