@@ -5,9 +5,15 @@ module.exports = ({ env }) => {
     },
   };
 
+  const graphql = {
+    endpoint: "/graphql",
+    playgroundAlways: true,
+  };
+
   if (env("NODE_ENV") === "production") {
     return {
       comments,
+      graphql,
       upload: {
         config: {
           provider:
@@ -15,13 +21,13 @@ module.exports = ({ env }) => {
           providerOptions: {
             bucketName: env("BUCKET_NAME"),
             publicFiles: true,
-            uniform: false,
+            uniform: true,
             basePath: "",
           },
         },
       },
     };
   } else {
-    return { comments };
+    return { comments, graphql };
   }
 };

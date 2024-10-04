@@ -1,25 +1,40 @@
-FROM node:18 as build
-WORKDIR /usr/src/app
+# Fase de construcción
+FROM node:18-alpine AS builder
 
-COPY package.json  .
-COPY yarn.lock .
-COPY .env .
+# Establecer el directorio de trabajo
+WORKDIR /app
+
+# Copiar archivos de dependencias primero para aprovechar la cache de Docker
+COPY package*.json ./
+
+# Instalar dependencias de producción
+RUN rm -rf node_modules && yarn install --frozen-lockfile && yarn cache clean --force
+
+# Copiar el resto de los archivos de la aplicación
+COPY . .
 
 ENV NODE_ENV production
 
-RUN yarn install --production --quiet --frozen-lockfile
-COPY . .
-
-#needed for files and folder creation by Cloud Run
-RUN chmod 777 /usr/src/app/node_modules
-RUN chmod 777 /usr/src/app/public/uploads
-
+# Construir la aplicación
 RUN yarn build
 
+# Fase de producción
+FROM node:18-alpine
+
+# Establecer el directorio de trabajo en la imagen final
+WORKDIR /app
+
+# Establecer la variable de entorno para producción
+ENV NODE_ENV production
+
+# Copiar solo los artefactos de la construcción
+COPY --from=builder /app ./
+
+# Exponer el puerto en el que corre Strapi
 EXPOSE 1337
-EXPOSE 5432
 
-#changing user
-USER 1000
+# Configurar volúmenes para las cargas persistentes
+VOLUME ["/app/public/uploads"]
 
-CMD ["yarn","start"]
+# Comando para ejecutar la aplicación
+CMD ["yarn", "start"]
